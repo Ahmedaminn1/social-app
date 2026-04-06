@@ -9,17 +9,24 @@ export default function AuthContextProvider({ children }) {
   
   async function getUserData() {
     try {
-      const { data } = await getLoggedUserData();
       setisLoading(true)
-      console.log(data);
-      setuserData(data.user)
+      const response = await getLoggedUserData();
+      const body = response?.data;
+      const apiPayload = body?.data || body; // Auto-discovery for nested data field
+      
+      // Auto-Discovery Logic: Find user object wherever it is hidden
+      if (apiPayload?.user) {
+        setuserData(apiPayload.user);
+      } else if (apiPayload && (apiPayload.name || apiPayload.email)) {
+        // The payload itself IS the user object
+        setuserData(apiPayload);
+      }
     } catch (error) {
-      console.log(error);
-    }finally{
+      console.error("DEBUG: Failed to fetch profile:", error.response?.data || error.message);
+    } finally {
       setisLoading(false)
     }
   }
-
   useEffect(() => {
     if(token){
       getUserData()

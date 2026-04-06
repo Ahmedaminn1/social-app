@@ -16,13 +16,21 @@ export default function PostDetails() {
 
   async function getPostDetails(postId) {
     try {
-    const { data } = await getSinglePost(postId);
-    console.log(data);
-    setpost(data.post)
-    setpostComments(data.post.comments)
+      setisLoading(true)
+      const response = await getSinglePost(postId);
+      const data = response?.data;
+      const apiPayload = data?.data || data; // Auto-discovery for nested data field
+      
+      if (apiPayload?.post) {
+        setpost(apiPayload.post);
+        setpostComments(apiPayload.post.comments || []);
+      } else if (apiPayload?.[0]) { // Fallback if API returns single post as array
+        setpost(apiPayload[0]);
+        setpostComments(apiPayload[0].comments || []);
+      }
     } catch (error) {
-      console.log(error);
-    }finally{
+      console.error("DEBUG: Failed to fetch post details:", error.response?.data || error.message);
+    } finally {
       setisLoading(false)
     }
   }
@@ -36,25 +44,36 @@ export default function PostDetails() {
 
     <div className="max-w-3xl mx-auto m-5 bg-white rounded-lg shadow-sm border border-gray-200">
     {isLoading ? <PostSkeleton/> : <>
-      <CardHeader photo = {post.user.photo} name = {post.user.name} createdAt = {post.createdAt}/>
+      <CardHeader 
+        photo={post?.user?.photo} 
+        name={post?.user?.name} 
+        createdAt={post?.createdAt}
+      />
 
-      <CardBody setpostComments={setpostComments} isPostDetails = {true} id={id} body = {post.body}  image = {post.image} commentsLength = {postComments.length}/>
+      <CardBody 
+        setpostComments={setpostComments} 
+        isPostDetails={true} 
+        id={id} 
+        body={post?.body} 
+        image={post?.image} 
+        commentsLength={postComments?.length || 0}
+      />
 
-   {postComments.length > 0 && (
-  <>
-    {postComments.map((comment) => (
-      comment?.commentCreator ? (
-        <CardFooter 
-          key={comment._id} 
-          postUserId={post.user._id}
-          postId={post._id}
-          comment={comment}
-          setpostComments={setpostComments}
-        />
-      ) : null
-    ))}
-  </>
-)}
+      {postComments?.length > 0 && (
+        <div className="bg-gray-50 border-t border-gray-100 divide-y divide-gray-100">
+          {postComments.map((comment) => (
+            comment?.commentCreator ? (
+              <CardFooter 
+                key={comment._id} 
+                postUserId={post?.user?._id}
+                postId={post?._id}
+                comment={comment}
+                setpostComments={setpostComments}
+              />
+            ) : null
+          ))}
+        </div>
+      )}
     </>}
     </div>
     </>

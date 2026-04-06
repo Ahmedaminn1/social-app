@@ -38,16 +38,19 @@ export default function Login() {
     setsuccessMsg("");
     console.log(formData);
     try {
-      const {data} = await loginUser(formData);
-      console.log(data);
-      setsuccessMsg(data?.message);
-      toast.success(data?.message);
-      localStorage.setItem("userToken",data?.token)
-      settoken(data?.token)
+      const res = await loginUser(formData);
+      const data = res?.data;
+      const apiPayload = data?.data || data; // Auto-discovery for nested data field
+      
+      setsuccessMsg(data?.message || "Login Successful");
+      toast.success(data?.message || "Login Successful");
+      localStorage.setItem("userToken", apiPayload?.token);
+      settoken(apiPayload?.token);
     } catch (error) {
-      console.log(error);
-      seterrorMessage(error.data.error);
-      toast.error(error.data.error);
+      console.log("Login Error:", error);
+      const errorMsg = error.response?.data?.message || error.response?.data?.error || "Login failed. Please check your connection or credentials.";
+      seterrorMessage(errorMsg);
+      toast.error(errorMsg);
     }
   }
 

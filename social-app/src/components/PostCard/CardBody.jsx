@@ -1,27 +1,38 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { AiOutlineHeart } from 'react-icons/ai'
 import { BiCamera, BiMessageRounded, BiShareAlt } from 'react-icons/bi'
 import { BsEmojiSmile } from 'react-icons/bs'
 import { Link } from 'react-router-dom'
 import { LuSend } from "react-icons/lu";
 import {Button, ButtonGroup} from "@heroui/button";
-import { createComment } from '../../services/commentsServices'
+import { createComment, getPostComments } from '../../services/commentsServices'
 import {toast} from "react-toastify"
 import { useMutation } from '@tanstack/react-query'
 
 export default function CardBody({id ,body , image , commentsLength , isPostDetails , setpostComments}) {
   const [commentMsg, setcommentMsg] = useState("")
   const [isLoading, setisLoading] = useState(false)
+  const inputRef = useRef(null)
 
 
 
   const {mutate,isPending} = useMutation({
     mutationFn: createComment,
-    onSuccess:(data) => {
-      console.log(data);
-      setpostComments(data?.data.comments)
-      setcommentMsg("")
-      toast.success("Comment Added Successfully")
+    onSuccess: async () => {
+      // Manual refresh since API returns no response body for comment creation
+      try {
+        const response = await getPostComments(id);
+        const data = response?.data;
+        const apiPayload = data?.data || data;
+        
+        if (apiPayload?.comments) {
+          setpostComments(apiPayload.comments);
+        }
+        setcommentMsg("");
+        toast.success("Comment Added Successfully");
+      } catch (error) {
+        console.error("Failed to refresh comments:", error);
+      }
     },
     onError:(error)=>{
       console.log(error);
@@ -67,10 +78,13 @@ export default function CardBody({id ,body , image , commentsLength , isPostDeta
           <AiOutlineHeart className="w-6 h-6" />
           <span className="font-medium">1200</span>
         </button>
-        <Link to={`/post-details/${id}`} className="flex items-center gap-2 text-gray-600 hover:text-blue-500 transition-colors">
+        <button 
+          onClick={() => inputRef.current?.focus()} 
+          className="flex items-center gap-2 text-gray-600 hover:text-blue-500 transition-colors"
+        >
           <BiMessageRounded className="w-6 h-6" />
           <span className="font-medium">{commentsLength}</span>
-        </Link>
+        </button>
         <button className="flex items-center gap-2 text-gray-600 hover:text-green-500 transition-colors">
           <BiShareAlt className="w-6 h-6" />
           <span className="font-medium">17</span>
@@ -78,10 +92,16 @@ export default function CardBody({id ,body , image , commentsLength , isPostDeta
       </div>
       <div className="flex items-center gap-3 p-4 border-b border-gray-100">
         <input
+          ref={inputRef}
           onChange={(e)=>{sendComment(e)}}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && commentMsg.trim()) {
+              mutate({ content: commentMsg, post: id });
+            }
+          }}
           value={commentMsg}
           type="text"
-          placeholder="Write your comment"
+          placeholder="Write your comment..."
           className="flex-1 bg-gray-50 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <Button isLoading={isPending} onPress={()=>{mutate({

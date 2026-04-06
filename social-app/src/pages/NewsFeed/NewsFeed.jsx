@@ -15,6 +15,7 @@ export default function NewsFeed() {
   const [page, setpage] = useState(1)
   const [totalPages, settotalPages] = useState(1)
   const [initialLoad, setinitialLoad] = useState(true)
+  
   const {data , isLoading} = useQuery({
     queryKey:["getPosts" , page],
     queryFn: () => getAllPosts(page),
@@ -22,11 +23,12 @@ export default function NewsFeed() {
   })
 
   useEffect(() => {
-    if(data?.data.paginationInfo.numberOfPages){
-      settotalPages(data.data.paginationInfo.numberOfPages)
-      setinitialLoad(false)
+    const pageInfo = data?.data?.paginationInfo;
+    if (pageInfo?.numberOfPages) {
+      settotalPages(pageInfo.numberOfPages);
+      setinitialLoad(false);
     }
-  }, [data])
+  }, [data]);
   
 
   useEffect(() => {
@@ -45,16 +47,34 @@ export default function NewsFeed() {
             </div>
             <div className="col-span-2 space-y-5">
               <CreatePost />
-              {isLoading ? [...Array(5)].map((skeleton , index) => <PostSkeleton key={index}/>) : <>
-                {data?.data.posts && data?.data.posts.map((post) => <Post key={post.id} post={post} />)}
-              </>}
+              {isLoading ? [...Array(5)].map((_, index) => <PostSkeleton key={index} />) : 
+                <>
+                  {(() => {
+                    const body = data?.data;
+                    const apiPayload = body?.data || body; // Auto-discovery for nested data field
+                    
+                    // Look for array directly or inside 'posts' of the payload
+                    const postsArray = (Array.isArray(apiPayload) ? apiPayload : (apiPayload?.posts || apiPayload?.allPosts || null));
+                    
+                    if (postsArray && postsArray.length > 0) {
+                      return postsArray.map((post) => <Post key={post._id || post.id} post={post} />);
+                    } else {
+                      return (
+                        <div className="text-center p-10 bg-white rounded-lg shadow-sm border border-gray-100">
+                          <p className="text-gray-500 font-medium italic">No posts found on the home feed yet.</p>
+                        </div>
+                      );
+                    }
+                  })()}
+                </>
+              }
               {initialLoad ? <Skeleton className="h-3 w-4/5 rounded-lg" /> : 
               <>
               <Pagination 
-              key={data?.data.paginationInfo.numberOfPages} 
+              key={data?.data?.paginationInfo?.numberOfPages} 
               onChange={setpage}
               page={page} 
-              total={data?.data.paginationInfo.numberOfPages || totalPages} 
+              total={data?.data?.paginationInfo?.numberOfPages || totalPages} 
               showControls
               />
               

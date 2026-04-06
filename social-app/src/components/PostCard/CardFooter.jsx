@@ -25,9 +25,13 @@ export default function CardFooter({comment , postUserId , postId , setpostComme
 
   async function getNewComments(postId) {
     try {
-      const {data} = await getPostComments(postId)
-      console.log(data);
-      setpostComments(data.comments)
+      const response = await getPostComments(postId);
+      const data = response?.data;
+      const apiPayload = data?.data || data; // Auto-discovery for nested data field
+      
+      if (apiPayload?.comments) {
+        setpostComments(apiPayload.comments);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -37,13 +41,13 @@ return (
     <div className="p-4">
         <div className="flex items-start gap-3">
           <img
-            src={comment.commentCreator.photo.includes("/undefined") ? "https://img.freepik.com/premium-vector/user-profile-icon-flat-style-member-avatar-vector-illustration-isolated-background-human-permission-sign-business-concept_157943-15752.jpg?semt=ais_hybrid&w=740&q=80" : comment.commentCreator.photo}
-            alt={comment.commentCreator.name}
+            src={comment.commentCreator?.photo?.includes("/undefined") || !comment.commentCreator?.photo ? "https://img.freepik.com/premium-vector/user-profile-icon-flat-style-member-avatar-vector-illustration-isolated-background-human-permission-sign-business-concept_157943-15752.jpg?semt=ais_hybrid&w=740&q=80" : comment.commentCreator.photo}
+            alt={comment.commentCreator?.name || "User"}
             className="w-10 h-10 rounded-full object-cover"
           />
           <div className="grow bg-gray-50 rounded-2xl px-4 py-3">
             <h4 className="font-semibold text-sm text-gray-900">
-              {comment.commentCreator.name}
+              {comment.commentCreator?.name || "Anonymous"}
             </h4>
             <p className="text-sm text-gray-700 mt-1">
               {comment.content}
