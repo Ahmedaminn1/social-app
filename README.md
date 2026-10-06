@@ -1,42 +1,122 @@
-# Social Media Application
+﻿<div align="center">
 
-A modern React-based social media application with user authentication, news feed, and profile management features.
+<img src="./banner.jpg" alt="SocialApp Banner" width="100%" />
 
-## Features
+<br/>
+<br/>
 
-- **User Authentication**: Secure login and registration system
-- **News Feed**: Browse and interact with posts
-- **User Profiles**: View and manage user profiles
-- **Post Details**: Detailed view for individual posts
-- **Protected Routes**: Route protection for authenticated and non-authenticated users
-- **Responsive Design**: Built with Tailwind CSS and HeroUI components
-- **Dark Mode Support**: Customizable theme with dark mode
+# ✨ SocialApp
 
-## Tech Stack
+**A modern full-featured social media platform built with React 19 & cutting-edge web technologies**
 
-- **React 18**: Modern React with hooks
-- **React Router v6**: Client-side routing with protected routes
-- **HeroUI**: Beautiful UI component library
-- **Tailwind CSS**: Utility-first CSS framework
-- **TanStack Query (React Query)**: Server state management
-- **React Toastify**: Toast notifications
-- **Context API**: Global state management
+<br/>
 
-## Project Structure
+[![React](https://img.shields.io/badge/React-19-%2361DAFB?style=for-the-badge&logo=react&logoColor=white&labelColor=20232A)](https://react.dev)
+[![Vite](https://img.shields.io/badge/Vite-7-%23646CFF?style=for-the-badge&logo=vite&logoColor=white&labelColor=20232A)](https://vitejs.dev)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-4-%2338B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white&labelColor=20232A)](https://tailwindcss.com)
+[![React Query](https://img.shields.io/badge/React_Query-5-%23FF4154?style=for-the-badge&logo=reactquery&logoColor=white&labelColor=20232A)](https://tanstack.com/query)
+[![MIT License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge&labelColor=20232A)](./LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-purple?style=for-the-badge&labelColor=20232A)](./CONTRIBUTING.md)
+
+<br/>
+
+[🚀 Live Demo](#) &nbsp;•&nbsp; [📖 Documentation](#-project-structure) &nbsp;•&nbsp; [🐛 Report Bug](../../issues) &nbsp;•&nbsp; [💡 Request Feature](../../issues)
+
+<br/>
+
+</div>
+
+---
+
+## 🌟 What is SocialApp?
+
+**SocialApp** is a beautifully crafted social media web application that delivers a seamless, modern experience for connecting with others. Built with the latest React 19, it features a real-time news feed, secure JWT authentication, user profiles, and a fully responsive design — all powered by a blazing-fast Vite toolchain.
+
+> 🎯 *Built to showcase modern React best practices including protected routing, server state management with TanStack Query, form validation with Zod & React Hook Form, and smooth animations with Framer Motion.*
+
+---
+
+## ⚡ Features
+
+<table>
+<tr>
+<td width="50%">
+
+### 🔐 Authentication
+- Secure JWT-based login & registration
+- Protected & auth-guarded routes
+- Persistent session with context
+- Form validation with **Zod** schema
+
+</td>
+<td width="50%">
+
+### 📰 News Feed
+- Dynamic post feed
+- Like, comment & share interactions
+- Optimistic UI updates via React Query
+- Offline detection & graceful fallback
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### 👤 User Profiles
+- Rich user profile pages
+- View other users posts
+- Avatar & bio management
+
+</td>
+<td width="50%">
+
+### 🎨 UI / UX
+- Dark mode support out of the box
+- Glassmorphism design system
+- Smooth Framer Motion animations
+- Fully responsive on all screen sizes
+
+</td>
+</tr>
+</table>
+
+---
+
+## 🛠️ Tech Stack
+
+| Category | Technology |
+|----------|-----------|
+| ⚛️ **Framework** | React 19 + Vite 7 |
+| 🎨 **Styling** | Tailwind CSS v4 + HeroUI + DaisyUI |
+| 🗺️ **Routing** | React Router v7 |
+| 🔄 **Server State** | TanStack Query (React Query v5) |
+| 📋 **Forms** | React Hook Form + Zod validation |
+| 🌐 **HTTP Client** | Axios |
+| 🎬 **Animations** | Framer Motion |
+| 🔔 **Notifications** | React Toastify |
+| 📡 **Offline Detection** | React Detect Offline |
+| 🔍 **Linting** | ESLint 9 |
+
+---
+
+## 🗂️ Project Structure
 
 ```
-├── src/
-│   ├── components/
-│   │   └── ProtectedRoutes/
+social-app/
+├── 📁 src/
+│   ├── 📁 components/          # Reusable UI components
+│   │   └── 📁 ProtectedRoutes/
 │   │       ├── AppProtectedRoutes.jsx
 │   │       └── AuthProtectedRoutes.jsx
-│   ├── context/
+│   ├── 📁 context/             # Global state management
 │   │   ├── AuthContext.jsx
 │   │   └── CounterContext.jsx
-│   ├── Layouts/
+│   ├── 📁 hooks/               # Custom React hooks
+│   ├── 📁 Layouts/             # Page layout wrappers
 │   │   ├── MainLayout/
 │   │   └── AuthLayout/
-│   ├── pages/
+│   ├── 📁 lib/                 # Utilities & helpers
+│   ├── 📁 pages/               # Route-level page components
 │   │   ├── NewsFeed/
 │   │   ├── UserProfile/
 │   │   ├── PostDetails/
@@ -44,124 +124,120 @@ A modern React-based social media application with user authentication, news fee
 │   │   └── auth/
 │   │       ├── Login/
 │   │       └── Register/
+│   ├── 📁 services/            # API service layer
+│   ├── 📁 types/               # Type definitions
 │   ├── App.jsx
-│   ├── main.jsx
-│   ├── index.css
-│   └── hero.js
+│   └── main.jsx
+├── 📁 public/
+├── index.html
+├── vite.config.js
+└── package.json
 ```
 
-## Getting Started
+---
+
+## 🚀 Getting Started
 
 ### Prerequisites
 
-- Node.js (v16 or higher)
-- npm or yarn
+- **Node.js** v18 or higher
+- **npm** v9+
 
 ### Installation
 
-1. Clone the repository:
 ```bash
-git clone <repository-url>
-cd <project-directory>
-```
+# 1️⃣ Clone the repository
+git clone https://github.com/Ahmedaminn1/social-app.git
+cd social-app/social-app
 
-2. Install dependencies:
-```bash
+# 2️⃣ Install dependencies
 npm install
-```
 
-3. Start the development server:
-```bash
+# 3️⃣ Set up environment variables
+# Create a .env.local file with your API URL
+echo "VITE_API_BASE_URL=https://your-api-url.com" > .env.local
+
+# 4️⃣ Start the development server
 npm run dev
 ```
 
-4. Open your browser and navigate to `http://localhost:5173` (or the port shown in your terminal)
-
-## Routes
-
-### Public Routes
-- `/login` - User login page
-- `/register` - User registration page
-
-### Protected Routes (require authentication)
-- `/home` - News feed page
-- `/profile` - User profile page
-- `/post-details/:id` - Individual post details page
-
-## Key Dependencies
-
-```json
-{
-  "@heroui/react": "UI component library",
-  "react-router-dom": "Client-side routing",
-  "@tanstack/react-query": "Data fetching and caching",
-  "react-toastify": "Toast notifications",
-  "tailwindcss": "CSS framework"
-}
-```
-
-## Configuration
-
-### Tailwind CSS + HeroUI
-
-The project uses Tailwind CSS v4 with HeroUI plugin configuration:
-
-- **Plugin**: HeroUI components via `hero.js`
-- **Dark Mode**: Configured with custom variant
-- **Container**: Centered container utility
-
-### React Query
-
-- DevTools enabled in development mode
-- Query client configured in `main.jsx`
-
-## Context Providers
-
-The application uses React Context for global state management:
-
-- **AuthContext**: Manages authentication state and user data
-- **CounterContext**: Manages counter/notification state
-
-## Protected Routes
-
-The application implements two types of route protection:
-
-1. **AppProtectedRoutes**: Protects routes that require authentication (redirects to login if not authenticated)
-2. **AuthProtectedRoutes**: Protects auth routes (redirects to home if already authenticated)
-
-## Development
+🎉 Open [http://localhost:5173](http://localhost:5173) to see the app!
 
 ### Available Scripts
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
+```bash
+npm run dev       # 🔥 Start dev server with HMR
+npm run build     # 📦 Build for production
+npm run preview   # 👁️  Preview production build
+npm run lint      # 🔍 Run ESLint checks
+```
 
-### Code Style
+---
 
-- React components use functional components with hooks
-- Strict mode enabled for development
-- Protected routes pattern for security
+## 🛣️ Routes
 
-## Contributing
+### 🔓 Public Routes
+| Route | Description |
+|-------|-------------|
+| `/login` | User login page |
+| `/register` | New user registration |
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+### 🔒 Protected Routes *(require authentication)*
+| Route | Description |
+|-------|-------------|
+| `/home` | News feed |
+| `/profile` | Your user profile |
+| `/post-details/:id` | Individual post view |
 
-## License
+---
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+## 🌐 Environment Variables
 
-## Support
+```env
+VITE_API_BASE_URL=https://your-api-url.com
+```
 
-For support, please open an issue in the GitHub repository or contact the development team.
+---
 
-## Acknowledgments
+## 🤝 Contributing
 
-- HeroUI for the beautiful component library
-- React Router for seamless routing
-- TanStack Query for efficient data management
+Contributions are what make the open source community amazing! Any contributions are **greatly appreciated**.
+
+1. **Fork** the repository
+2. Create your feature branch: `git checkout -b feature/AmazingFeature`
+3. Commit your changes: `git commit -m "✨ Add AmazingFeature"`
+4. Push to the branch: `git push origin feature/AmazingFeature`
+5. Open a **Pull Request** 🎉
+
+---
+
+## 📄 License
+
+Distributed under the **MIT License**. See `LICENSE` for more information.
+
+---
+
+## 🙏 Acknowledgments
+
+- [HeroUI](https://www.heroui.com/) — gorgeous component library
+- [TanStack Query](https://tanstack.com/query) — effortless server state
+- [Framer Motion](https://www.framer.com/motion/) — silky smooth animations
+- [React Router](https://reactrouter.com/) — seamless client-side navigation
+- [Zod](https://zod.dev/) — bulletproof schema validation
+
+---
+
+<div align="center">
+
+**⭐ If you found this project useful, please give it a star! It helps others discover it.**
+
+<br/>
+
+Made with ❤️ and lots of ☕
+
+<br/>
+
+[![GitHub stars](https://img.shields.io/github/stars/Ahmedaminn1/social-app?style=social)](../../stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/Ahmedaminn1/social-app?style=social)](../../network/members)
+
+</div>
